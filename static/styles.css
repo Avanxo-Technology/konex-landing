@@ -79,14 +79,12 @@ body {
 
 /* --- under construction (temporary) ---------------------------------------- */
 .construccion {
-	--k-orange: #f59e0b;
-	--k-orange-deep: #ea580c;
+	--k-accent: #2563eb;
+	--k-accent-deep: #1e40af;
 	--k-ink: #0f172a;
 	width: min(62rem, 100vw - 3rem);
 	margin-left: 50%;
 	transform: translateX(-50%);
-	min-height: 80vh;
-	align-content: center;
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
 	gap: 3rem;
@@ -96,7 +94,7 @@ body {
 }
 .construccion-pill {
 	display: block;
-	color: var(--k-orange-deep);
+	color: var(--k-accent-deep);
 	font-size: clamp(1.25rem, 3vw, 1.75rem);
 	font-weight: 700;
 	letter-spacing: 0.12em;
@@ -110,11 +108,16 @@ body {
 }
 
 /* phone */
-.phone {
+.phone-wrap {
 	/* everything inside is in em: the whole phone scales with this one value */
 	font-size: min(1rem, calc((100vw - 4rem) / 19));
 	position: relative;
 	width: 19em;
+}
+.phone {
+	position: relative;
+	z-index: 1;
+	width: 100%;
 	aspect-ratio: 9 / 18.5;
 	padding: 0.7em;
 	border-radius: 2.8em;
@@ -147,7 +150,7 @@ body {
 
 .app-banner {
 	padding: 2.9em 1.1em 1.2em;
-	background: linear-gradient(135deg, var(--k-orange), var(--k-orange-deep));
+	background: linear-gradient(135deg, #3b82f6, var(--k-accent-deep));
 	color: #fff;
 	border-radius: 0 0 1.6em 1.6em;
 	display: grid; gap: 0.1em;
@@ -178,12 +181,12 @@ body {
 .app-machine { font-size: 0.7em; color: #475569; }
 .app-status-tag { display: inline-flex; align-items: center; gap: 0.3em; font-size: 0.64em; font-weight: 600; color: #15803d; }
 .app-status-tag i { width: 0.4em; height: 0.4em; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2); }
-.app-tile { --tile: #fff7ed; width: 2.9em; height: 2.9em; border-radius: 0.8em; background: var(--tile); color: var(--k-orange-deep); display: grid; place-items: center; }
+.app-tile { --tile: #eff6ff; width: 2.9em; height: 2.9em; border-radius: 0.8em; background: var(--tile); color: var(--k-accent-deep); display: grid; place-items: center; }
 .app-tile svg { width: 2.1em; height: 2.1em; }
 
 .app-tabs { display: flex; justify-content: space-around; padding: 0.65em 0 0.9em; background: #fff; border-top: 1px solid #e2e8f0; }
 .app-tabs span { color: #94a3b8; }
-.app-tabs .on { color: var(--k-orange-deep); }
+.app-tabs .on { color: var(--k-accent-deep); }
 .app-tabs svg { width: 1.2em; height: 1.2em; }
 .app-tabs svg [stroke] { stroke: currentColor; }
 .app-tabs span svg { fill: currentColor; }
@@ -191,36 +194,50 @@ body {
 .app-stats { margin-top: 0.8em; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4em; }
 .app-stats span { display: grid; padding: 0.4em 0.2em; border-radius: 0.7em; background: rgba(255, 255, 255, 0.2); font-size: 0.6em; text-align: center; }
 .app-stats b { font-size: 1.58em; line-height: 1.2; }
-.app-status-tag.use { color: #b45309; }
-.app-status-tag.use i { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22); }
+.app-status-tag.use { color: #1d4ed8; }
+.app-status-tag.use i { background: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.22); }
 .app-add {
 	margin: 0 0.8em 0.8em; padding: 0.65em; border-radius: 0.9em; text-align: center;
 	background: var(--k-ink); color: #fff; font-size: 0.75em; font-weight: 700;
 }
-.app-add span { display: inline-block; margin-right: 0.25em; color: var(--k-orange); font-size: 1.27em; line-height: 1; }
+.app-add span { display: inline-block; margin-right: 0.25em; color: #93c5fd; font-size: 1.27em; line-height: 1; }
 
-/* machines working on the landing itself (decorative) */
-body:has(.construccion) { overflow-x: clip; }
+/* machines that come out of the phone and work on the landing (decorative).
+   They are positioned against .phone-wrap, so they scale and follow the phone:
+   the ground sits 8rem under the phone's bottom edge (the section's padding). */
+body:has(.construccion) {
+	overflow-x: clip;
+	--bg: #ffffff; --surface: #ffffff; --text: #0f172a; --muted: #475569; --border: #e2e8f0;
+	background: #fff; color: #0f172a;
+}
 .construccion { position: relative; padding-bottom: 10rem; }
-.construccion-copy, .phone { position: relative; z-index: 1; }
-.site-scene { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-.site-scene svg { display: block; width: 100%; overflow: visible; fill: none; }
-.site-scene g, .site-scene path { transform-box: view-box; }
+.construccion-copy { position: relative; z-index: 1; }
+.phone-out { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.phone-out svg { display: block; width: 100%; overflow: visible; fill: none; }
+.phone-out g, .phone-out path { transform-box: view-box; }
 .ground {
 	position: absolute; bottom: 0; left: 50%; width: 100vw; height: 2rem; transform: translateX(-50%);
 	background:
 		repeating-linear-gradient(90deg, #64748b 0 1.5rem, transparent 1.5rem 3rem) center 1.05rem / 100% 2px no-repeat,
 		linear-gradient(#1e293b, #0b1220);
 	border-top: 2px solid #334155;
+	pointer-events: none;
 }
 .w-cr, .w-ex, .w-tk { position: absolute; }
-.w-cr { width: min(14rem, calc((100vw - 62rem) / 2 - 1.5rem)); right: calc(100% + 1rem); bottom: 1.9rem; transform: scaleX(-1); }
-.w-ex { width: 14rem; right: -1.5rem; bottom: 1.8rem; }
-.w-tk { width: 9rem; bottom: 0.2rem; left: -10rem; animation: drive 18s linear infinite; }
+/* rest positions (the animations start from the phone and end here) */
+.w-cr { width: 11rem; left: calc(100% + 0.5rem); top: calc(100% - 11.7rem); animation: out-cr 2.4s 1.2s cubic-bezier(.2,.8,.2,1) backwards; }
+.w-ex { width: 14rem; left: -13rem; top: calc(100% + 0.73rem); animation: out-ex 2.2s 0.7s cubic-bezier(.2,.8,.2,1) backwards; }
+.w-tk { width: 9rem; left: calc(50% - 4.5rem); top: calc(100% + 4.55rem); animation: drive 20s linear infinite; }
 @media (max-width: 76rem) { .w-cr { display: none; } }
 @media (max-width: 52rem) {
-	.w-ex { width: 10rem; right: 0; }
-	.w-tk { width: 6.5rem; }
+	.w-ex { width: 10rem; left: calc(50% - 5rem); top: calc(100% + 2.87rem); }
+	.w-tk { width: 6.5rem; left: calc(50% - 3.25rem); top: calc(100% + 6rem); }
+	@keyframes drive {
+		0% { left: calc(3em - 3.25rem); top: calc(21.3em - 1.9rem); transform: scale(0.2); opacity: 0; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+		4% { opacity: 1; }
+		12% { left: calc(50% - 3.25rem); top: calc(100% + 6rem); transform: scale(1); opacity: 1; animation-timing-function: linear; }
+		100% { left: calc(100% + 60vw); top: calc(100% + 6rem); transform: scale(1); opacity: 1; }
+	}
 }
 
 .cr-hook { transform-origin: 150px 33px; animation: cr-sway 2.6s ease-in-out infinite; }
@@ -238,7 +255,7 @@ body:has(.construccion) { overflow-x: clip; }
 	opacity: 0; animation: smoke 2.4s ease-out infinite;
 }
 .smoke.dust {
-	background: radial-gradient(circle, rgba(180, 140, 90, 0.75), rgba(180, 140, 90, 0) 70%);
+	background: radial-gradient(circle, rgba(148, 163, 184, 0.8), rgba(148, 163, 184, 0) 70%);
 	animation-name: dust; animation-duration: 2.4s;
 }
 .haze {
@@ -246,9 +263,16 @@ body:has(.construccion) { overflow-x: clip; }
 	background: radial-gradient(ellipse, rgba(100, 116, 139, 0.4), rgba(100, 116, 139, 0) 70%);
 	animation: haze 5s ease-in-out infinite alternate;
 }
-.haze.hz2 { right: 4%; bottom: 3rem; width: 14rem; height: 4rem; animation-delay: -2s; }
+.w-ex .haze { left: -10%; top: 35%; width: 100%; height: 4rem; }
 
-@keyframes drive { from { left: -10rem; } to { left: 100%; } }
+@keyframes drive {
+	0% { left: calc(3em - 4.5rem); top: calc(21.3em - 2.6rem); transform: scale(0.2); opacity: 0; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+	4% { opacity: 1; }
+	12% { left: calc(50% - 4.5rem); top: calc(100% + 4.55rem); transform: scale(1); opacity: 1; animation-timing-function: linear; }
+	100% { left: calc(100% + 60vw); top: calc(100% + 4.55rem); transform: scale(1); opacity: 1; }
+}
+@keyframes out-ex { from { left: calc(3em - 7rem); top: calc(15.2em - 3.7rem); transform: scale(0.18); opacity: 0; } 12% { opacity: 1; } }
+@keyframes out-cr { from { left: calc(3em - 5.5rem); top: calc(27.1em - 9.9rem); transform: scale(0.18); opacity: 0; } 12% { opacity: 1; } }
 @keyframes smoke {
 	0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
 	15% { opacity: 1; }
@@ -270,8 +294,7 @@ body:has(.construccion) { overflow-x: clip; }
 @keyframes phone-float { 50% { transform: translateY(-8px); } }
 @keyframes row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-	.phone, .site-scene *, .smoke, .haze { animation: none; }
-	.w-tk { left: 8%; }
+	.phone, .phone-out *, .w-cr, .w-ex, .w-tk, .smoke, .haze { animation: none; }
 	.smoke, .haze { display: none; }
 	.app-row { animation: none; opacity: 1; }
 }
