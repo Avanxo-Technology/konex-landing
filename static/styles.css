@@ -76,3 +76,8 @@ body {
 .blog-body img { max-width: 100%; height: auto; }
 .blog-byline { display: flex; gap: 1rem; align-items: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border, #e2e8f0); }
 .blog-avatar { width: 3rem; height: 3rem; border-radius: 9999px; object-fit: cover; }
+
+/* --- under construction (temporary) ---------------------------------------- */
+.construccion { min-height: 70vh; display: grid; place-content: center; text-align: center; gap: 1rem; }
+.construccion h1 { margin: 0; font-size: clamp(1.75rem, 5vw, 2.75rem); letter-spacing: -0.02em; }
+.construccion p { margin: 0; color: var(--muted); }
