@@ -1,0 +1,18 @@
+# konex-landing - declared once here, read by gosite and by the site itself.
+# After editing, run 'gosite generate' and restart.
+
+project: konex-landing
+module: github.com/example/konex-landing
+core: 0.60.0
+flavor: plain
+app_port: 8004
+cms_port: 8005
+app_domain: konex-landing.test
+cms_domain: cms.konex-landing.test
+storage: s3
+database: mongodb
+addons:
+  - Forms
+  - Blog
+  - Analytics
+  - Replica

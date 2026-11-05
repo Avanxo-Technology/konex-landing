@@ -1,0 +1,16 @@
+module github.com/example/konex-landing
+
+// Echo v5 (inside gosite core) requires Go 1.25 or newer.
+go 1.25.0
+
+require github.com/Avanxo-Technology/gosite-cli/core v0.60.0
+
+require (
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/labstack/echo/v5 v5.3.1 // indirect
+	github.com/redis/go-redis/v9 v9.22.0 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
+	golang.org/x/sync v0.22.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/time v0.15.0 // indirect
+)
