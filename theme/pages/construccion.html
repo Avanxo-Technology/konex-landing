@@ -1,11 +1,108 @@
 {{/*
-  Temporary "under construction" page. Served at "/" while the real home is
-  built. To go live: in site/site.go point "/" back at the "home" page, then
-  delete this file and the .construccion rules in static/styles.css.
+  Temporary "under construction" page, static (no CMS). Served at "/" while the
+  real home is built. To go live: in site/site.go point "/" back at the "home"
+  page, then delete this file and the "under construction" block in
+  static/styles.css.
+
+  The phone is pure HTML/CSS: the machine icons are inline SVG <symbol>s that
+  use currentColor, so they take the colour of whatever wraps them.
 */}}
 {{define "content"}}
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+	<defs>
+		<symbol id="i-excavator" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+			<rect x="6" y="46" width="38" height="11" rx="5.5"/>
+			<path d="M12 46V32h16l4 6v8"/>
+			<path d="M18 32v-5h8l3 5"/>
+			<path d="M30 36 44 14l11 14"/>
+			<path d="M55 28l-3 10h9l-2-10"/>
+		</symbol>
+		<symbol id="i-truck" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M4 44V24l22 4v16"/>
+			<path d="M26 20h20l8 14v10H26z"/>
+			<path d="M4 44h50"/>
+			<circle cx="16" cy="48" r="6" fill="var(--tile, #fff)"/>
+			<circle cx="42" cy="48" r="6" fill="var(--tile, #fff)"/>
+		</symbol>
+		<symbol id="i-crane" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+			<rect x="10" y="50" width="26" height="8" rx="4"/>
+			<path d="M23 50V12M14 12h40M23 12 10 22M23 12l14 0"/>
+			<path d="M50 12v20"/>
+			<path d="M46 32h8v6h-8z"/>
+			<path d="M15 50l8-10 8 10"/>
+		</symbol>
+		<symbol id="i-user" viewBox="0 0 24 24" fill="currentColor">
+			<circle cx="12" cy="8.5" r="4"/>
+			<path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/>
+		</symbol>
+		<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+			<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>
+		</symbol>
+		<symbol id="i-home" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 3 10.5V21h6v-6h6v6h6V10.5z"/></symbol>
+		<symbol id="i-chat" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></symbol>
+	</defs>
+</svg>
+
 <section class="construccion">
-	<h1>Estamos construyendo algo nuevo</h1>
-	<p>Nuestro sitio estará disponible muy pronto. Gracias por tu visita.</p>
+	<div class="construccion-copy">
+		<span class="construccion-pill">Próximamente</span>
+		<h1>Tu maquinaria, trabajando por ti</h1>
+		<p>Konex renta tu maquinaria: la ofrecemos puerta a puerta y tú sigues cada proyecto, cada operador y cada hora desde tu app. Gracias por tu visita.</p>
+	</div>
+
+	<div class="phone" role="img" aria-label="Vista previa de la app de Konex para propietarios: lista de mis máquinas, con su estado, proyecto y horas trabajadas">
+		<div class="phone-notch"></div>
+		<div class="phone-screen">
+			<div class="app-status"><span>9:41</span><span class="app-status-dots"><i></i><i></i><i></i></span></div>
+
+			<div class="app-banner">
+				<span class="app-brand">konex</span>
+				<span class="app-tagline">Mis máquinas</span>
+				<div class="app-stats">
+					<span><b>3</b>máquinas</span>
+					<span><b>2</b>en uso</span>
+					<span><b>210 h</b>este mes</span>
+				</div>
+			</div>
+
+			<ul class="app-list">
+				<li class="app-row">
+					<span class="app-tile"><svg><use href="#i-excavator"/></svg></span>
+					<span class="app-info">
+						<strong>Excavadora 20 t</strong>
+						<span class="app-machine">Torre Norte · 126 h</span>
+						<span class="app-status-tag use"><i></i>En uso</span>
+					</span>
+					<span class="app-avatar a1" title="Operador"><svg><use href="#i-user"/></svg></span>
+				</li>
+				<li class="app-row">
+					<span class="app-tile"><svg><use href="#i-truck"/></svg></span>
+					<span class="app-info">
+						<strong>Volqueta 12 m³</strong>
+						<span class="app-machine">Lista para su próxima obra</span>
+						<span class="app-status-tag"><i></i>Disponible para rentar</span>
+					</span>
+				</li>
+				<li class="app-row">
+					<span class="app-tile"><svg><use href="#i-crane"/></svg></span>
+					<span class="app-info">
+						<strong>Grúa torre</strong>
+						<span class="app-machine">Vía Occidente · 84 h</span>
+						<span class="app-status-tag use"><i></i>En uso</span>
+					</span>
+					<span class="app-avatar a3" title="Operador"><svg><use href="#i-user"/></svg></span>
+				</li>
+			</ul>
+
+			<div class="app-add"><span>+</span> Subir máquina</div>
+
+			<nav class="app-tabs" aria-hidden="true">
+				<span class="on"><svg><use href="#i-home"/></svg></span>
+				<span><svg><use href="#i-search"/></svg></span>
+				<span><svg><use href="#i-chat"/></svg></span>
+				<span><svg><use href="#i-user"/></svg></span>
+			</nav>
+		</div>
+	</div>
 </section>
 {{end}}
