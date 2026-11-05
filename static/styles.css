@@ -202,34 +202,40 @@ body {
 }
 .app-add span { display: inline-block; margin-right: 0.25em; color: #93c5fd; font-size: 1.27em; line-height: 1; }
 
-/* four machines that drop out from behind the middle of the phone, all at once,
-   work, and go back up (decorative). They sit behind the phone (z-index) and are
-   sized in em of .phone-wrap, so they scale with it; --s enlarges them on wide screens. */
+/* four machines that get shot out from behind the phone, all from the same point
+   and each in its own direction, then pulled back in (decorative). They sit behind
+   the phone (z-index). --x/--y are the resting offset (em of .phone-wrap) from the
+   phone's centre, --r the spin they carry while flying; --s scales the machines. */
 body:has(.construccion) {
 	overflow-x: clip;
 	--bg: #ffffff; --surface: #ffffff; --text: #0f172a; --muted: #475569; --border: #e2e8f0;
 	background: #fff; color: #0f172a;
 }
-.construccion { position: relative; padding-bottom: 8rem; }
+.construccion { position: relative; padding-bottom: 11rem; }
 .construccion-copy { position: relative; z-index: 1; }
 .phone-wrap { z-index: 1; }
 .phone-out { --s: 1; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-@media (min-width: 52rem) { .phone-out { --s: 1.45; } }
 .phone-out svg { display: block; width: 100%; overflow: visible; fill: none; }
 .phone-out g, .phone-out path { transform-box: view-box; }
 .w-ex, .w-ld, .w-mx, .w-tk {
-	position: absolute;
-	/* centre of the machine, k em from the phone's centre; feet 1.2rem under the phone */
-	left: calc(50% + var(--k) * var(--s) * 1em);
-	translate: -50% 0;
-	bottom: calc(-1.2rem - 3.6em * var(--s));
-	animation: drop 12s ease-in-out infinite;
+	position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+	/* gentle first exit, then the fast loop (it starts at the resting pose) */
+	animation: intro 2.2s 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) both, shoot 5s 3s infinite;
 }
-.w-ex { width: calc(6.4em * var(--s)); }
-.w-ld { width: calc(5.2em * var(--s)); }
-.w-mx { width: calc(5.2em * var(--s)); }
-.w-tk { width: calc(4.8em * var(--s)); }
-/* soft shadow instead of a road */
+.w-ex { width: calc(6.4em * var(--s)); --x: -7;  --y: 23; --r: -50deg; }
+.w-ld { width: calc(5.2em * var(--s)); --x: -2.5; --y: 28; --r: 70deg; }
+.w-mx { width: calc(5.2em * var(--s)); --x: 2.5;  --y: 28; --r: -70deg; }
+.w-tk { width: calc(4.8em * var(--s)); --x: 8;   --y: 23; --r: 50deg; }
+/* wide screens: one machine out of each corner of the phone */
+@media (min-width: 52rem) {
+	.construccion { padding-bottom: 4rem; }
+	.phone-out { --s: 1.45; }
+	.w-ex { --x: -13;  --y: -14; --r: -80deg; }
+	.w-tk { --x: 13;   --y: -10; --r: 80deg; }
+	.w-ld { --x: -12;  --y: 16;  --r: 100deg; }
+	.w-mx { --x: 12.5; --y: 17;  --r: -100deg; }
+}
+/* soft shadow under each machine */
 .w-ex::after, .w-ld::after, .w-mx::after, .w-tk::after {
 	content: ""; position: absolute; left: 6%; right: 6%; bottom: -0.15em; height: 0.45em; z-index: -1;
 	background: radial-gradient(ellipse, rgba(15, 23, 42, 0.28), rgba(15, 23, 42, 0) 70%);
@@ -262,10 +268,15 @@ body:has(.construccion) {
 }
 .w-ex .haze { left: -10%; top: 35%; width: 100%; height: 3em; }
 
-@keyframes drop {
-	0%, 8% { transform: translate(calc(var(--k) * var(--s) * -1em), -23em) scale(0.4); }
-	26%, 64% { transform: none; }
-	82%, 100% { transform: translate(calc(var(--k) * var(--s) * -1em), -23em) scale(0.4); }
+@keyframes intro {
+	from { transform: translate(0, 0) scale(0.3) rotate(var(--r)); }
+	to { transform: translate(calc(var(--x) * 1em), calc(var(--y) * 1em)) scale(1) rotate(0deg); }
+}
+@keyframes shoot {
+	0%, 60% { transform: translate(calc(var(--x) * 1em), calc(var(--y) * 1em)) scale(1) rotate(0deg); animation-timing-function: ease-in; }
+	78% { transform: translate(0, 0) scale(0.3) rotate(var(--r)); animation-timing-function: linear; }
+	88% { transform: translate(0, 0) scale(0.3) rotate(var(--r)); animation-timing-function: cubic-bezier(0.2, 1.35, 0.4, 1); }
+	100% { transform: translate(calc(var(--x) * 1em), calc(var(--y) * 1em)) scale(1) rotate(0deg); }
 }
 @keyframes tk-dump { 0%, 30% { transform: rotate(0); } 38%, 56% { transform: rotate(-22deg); } 64%, 100% { transform: rotate(0); } }
 @keyframes ld-lift { 0%, 100% { transform: rotate(4deg); } 50% { transform: rotate(-10deg); } }
