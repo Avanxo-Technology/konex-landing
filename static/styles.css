@@ -175,7 +175,7 @@ body {
 .app-row:nth-child(3) { animation-delay: 0.3s; }
 .app-avatar { width: 2.1em; height: 2.1em; border-radius: 50%; display: grid; place-items: center; color: #fff; overflow: hidden; }
 .app-avatar svg { width: 1.5em; height: 1.5em; fill: currentColor; align-self: end; }
-.a1 { background: #3b82f6; } .a2 { background: #10b981; } .a3 { background: #8b5cf6; }
+.a1, .a2, .a3 { background: #8b5cf6; }
 .app-info { display: grid; gap: 0.05em; min-width: 0; }
 .app-info strong { font-size: 0.78em; }
 .app-machine { font-size: 0.7em; color: #475569; }
