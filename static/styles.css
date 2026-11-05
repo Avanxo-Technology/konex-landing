@@ -266,12 +266,17 @@ body:has(.construccion) {
 }
 .construccion-copy { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 3px 22px rgba(0, 0, 0, 0.6); }
 .construccion-copy p { color: #fff; }
-/* same blue as the "konex" wordmark inside the phone */
+/* same blue as the phone's "konex" wordmark; the contrast comes from a dark halo behind the
+   letters (stacked soft black shadows), not from a border or a lighter colour */
 .construccion .construccion-pill {
+	position: relative;
 	color: var(--k-accent-deep);
-	/* thin white outline behind the blue letters: contrast on the dark dirt */
-	-webkit-text-stroke: 0.09em #fff; paint-order: stroke fill;
-	text-shadow: none;
+	text-shadow:
+		0 0 2px rgba(0, 0, 0, 0.95),
+		0 0 6px rgba(0, 0, 0, 0.95),
+		0 0 14px rgba(0, 0, 0, 0.9),
+		0 0 26px rgba(0, 0, 0, 0.85),
+		0 0 42px rgba(0, 0, 0, 0.75);
 }
 .construccion-copy { position: relative; z-index: 1; }
 @keyframes row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
