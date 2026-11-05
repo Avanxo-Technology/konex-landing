@@ -202,51 +202,48 @@ body {
 }
 .app-add span { display: inline-block; margin-right: 0.25em; color: #93c5fd; font-size: 1.27em; line-height: 1; }
 
-/* machines that come out of the phone and work on the landing (decorative).
-   They are positioned against .phone-wrap, so they scale and follow the phone:
-   the ground sits 8rem under the phone's bottom edge (the section's padding). */
+/* four machines that drop out from behind the middle of the phone, all at once,
+   work, and go back up (decorative). They sit behind the phone (z-index) and are
+   sized in em of .phone-wrap, so they scale with it; --s enlarges them on wide screens. */
 body:has(.construccion) {
 	overflow-x: clip;
 	--bg: #ffffff; --surface: #ffffff; --text: #0f172a; --muted: #475569; --border: #e2e8f0;
 	background: #fff; color: #0f172a;
 }
-.construccion { position: relative; padding-bottom: 10rem; }
+.construccion { position: relative; padding-bottom: 8rem; }
 .construccion-copy { position: relative; z-index: 1; }
-.phone-out { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.phone-wrap { z-index: 1; }
+.phone-out { --s: 1; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+@media (min-width: 52rem) { .phone-out { --s: 1.45; } }
 .phone-out svg { display: block; width: 100%; overflow: visible; fill: none; }
 .phone-out g, .phone-out path { transform-box: view-box; }
-.ground {
-	position: absolute; bottom: 0; left: 50%; width: 100vw; height: 2rem; transform: translateX(-50%);
-	background:
-		repeating-linear-gradient(90deg, #64748b 0 1.5rem, transparent 1.5rem 3rem) center 1.05rem / 100% 2px no-repeat,
-		linear-gradient(#1e293b, #0b1220);
-	border-top: 2px solid #334155;
-	pointer-events: none;
+.w-ex, .w-ld, .w-mx, .w-tk {
+	position: absolute;
+	/* centre of the machine, k em from the phone's centre; feet 1.2rem under the phone */
+	left: calc(50% + var(--k) * var(--s) * 1em);
+	translate: -50% 0;
+	bottom: calc(-1.2rem - 3.6em * var(--s));
+	animation: drop 12s ease-in-out infinite;
 }
-.w-cr, .w-ex, .w-tk { position: absolute; }
-/* rest positions (the animations start from the phone and end here) */
-.w-cr { width: 11rem; left: calc(100% + 0.5rem); top: calc(100% - 11.7rem); animation: out-cr 2.4s 1.2s cubic-bezier(.2,.8,.2,1) backwards; }
-.w-ex { width: 14rem; left: -13rem; top: calc(100% + 0.73rem); animation: out-ex 2.2s 0.7s cubic-bezier(.2,.8,.2,1) backwards; }
-.w-tk { width: 9rem; left: calc(50% - 4.5rem); top: calc(100% + 4.55rem); animation: drive 20s linear infinite; }
-@media (max-width: 76rem) { .w-cr { display: none; } }
-@media (max-width: 52rem) {
-	.w-ex { width: 10rem; left: calc(50% - 5rem); top: calc(100% + 2.87rem); }
-	.w-tk { width: 6.5rem; left: calc(50% - 3.25rem); top: calc(100% + 6rem); }
-	@keyframes drive {
-		0% { left: calc(3em - 3.25rem); top: calc(21.3em - 1.9rem); transform: scale(0.2); opacity: 0; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
-		4% { opacity: 1; }
-		12% { left: calc(50% - 3.25rem); top: calc(100% + 6rem); transform: scale(1); opacity: 1; animation-timing-function: linear; }
-		100% { left: calc(100% + 60vw); top: calc(100% + 6rem); transform: scale(1); opacity: 1; }
-	}
+.w-ex { width: calc(6.4em * var(--s)); }
+.w-ld { width: calc(5.2em * var(--s)); }
+.w-mx { width: calc(5.2em * var(--s)); }
+.w-tk { width: calc(4.8em * var(--s)); }
+/* soft shadow instead of a road */
+.w-ex::after, .w-ld::after, .w-mx::after, .w-tk::after {
+	content: ""; position: absolute; left: 6%; right: 6%; bottom: -0.15em; height: 0.45em; z-index: -1;
+	background: radial-gradient(ellipse, rgba(15, 23, 42, 0.28), rgba(15, 23, 42, 0) 70%);
 }
+.tk-bed { transform-origin: 6px 48px; animation: tk-dump 12s ease-in-out infinite; }
 
-.cr-hook { transform-origin: 150px 33px; animation: cr-sway 2.6s ease-in-out infinite; }
 .ex-house { animation: m-shake 0.16s linear infinite; }
 .ex-boom { transform-origin: 60px 42px; animation: ex-boom 3s ease-in-out infinite; }
 .ex-stick { transform-origin: 90px 14px; animation: ex-stick 3s ease-in-out infinite; }
 .ex-bucket { transform-origin: 108px 44px; animation: ex-bucket 3s ease-in-out infinite; }
-.tk-body { animation: m-shake 0.2s linear infinite; }
-.tk-wheel { animation: spin 0.7s linear infinite; }
+.tk-body, .ld-body, .mx-body { animation: m-shake 0.2s linear infinite; }
+.ld-arm { transform-origin: 34px 42px; animation: ld-lift 2.4s ease-in-out infinite; }
+.ld-bucket { transform-origin: 14px 28px; animation: ld-tip 2.4s ease-in-out infinite; }
+.mx-stripes { animation: mx-turn 1.6s linear infinite; }
 
 .smoke {
 	position: absolute; z-index: 3;
@@ -263,16 +260,17 @@ body:has(.construccion) {
 	background: radial-gradient(ellipse, rgba(100, 116, 139, 0.4), rgba(100, 116, 139, 0) 70%);
 	animation: haze 5s ease-in-out infinite alternate;
 }
-.w-ex .haze { left: -10%; top: 35%; width: 100%; height: 4rem; }
+.w-ex .haze { left: -10%; top: 35%; width: 100%; height: 3em; }
 
-@keyframes drive {
-	0% { left: calc(3em - 4.5rem); top: calc(21.3em - 2.6rem); transform: scale(0.2); opacity: 0; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
-	4% { opacity: 1; }
-	12% { left: calc(50% - 4.5rem); top: calc(100% + 4.55rem); transform: scale(1); opacity: 1; animation-timing-function: linear; }
-	100% { left: calc(100% + 60vw); top: calc(100% + 4.55rem); transform: scale(1); opacity: 1; }
+@keyframes drop {
+	0%, 8% { transform: translate(calc(var(--k) * var(--s) * -1em), -23em) scale(0.4); }
+	26%, 64% { transform: none; }
+	82%, 100% { transform: translate(calc(var(--k) * var(--s) * -1em), -23em) scale(0.4); }
 }
-@keyframes out-ex { from { left: calc(3em - 7rem); top: calc(15.2em - 3.7rem); transform: scale(0.18); opacity: 0; } 12% { opacity: 1; } }
-@keyframes out-cr { from { left: calc(3em - 5.5rem); top: calc(27.1em - 9.9rem); transform: scale(0.18); opacity: 0; } 12% { opacity: 1; } }
+@keyframes tk-dump { 0%, 30% { transform: rotate(0); } 38%, 56% { transform: rotate(-22deg); } 64%, 100% { transform: rotate(0); } }
+@keyframes ld-lift { 0%, 100% { transform: rotate(4deg); } 50% { transform: rotate(-10deg); } }
+@keyframes ld-tip { 0%, 100% { transform: rotate(8deg); } 50% { transform: rotate(-14deg); } }
+@keyframes mx-turn { to { stroke-dashoffset: -28; } }
 @keyframes smoke {
 	0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
 	15% { opacity: 1; }
@@ -289,12 +287,11 @@ body:has(.construccion) {
 @keyframes ex-boom { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(5deg); } }
 @keyframes ex-stick { 0%, 100% { transform: rotate(8deg); } 50% { transform: rotate(-12deg); } }
 @keyframes ex-bucket { 0%, 100% { transform: rotate(12deg); } 50% { transform: rotate(-18deg); } }
-@keyframes cr-sway { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
 
 @keyframes phone-float { 50% { transform: translateY(-8px); } }
 @keyframes row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-	.phone, .phone-out *, .w-cr, .w-ex, .w-tk, .smoke, .haze { animation: none; }
+	.phone, .phone-out *, .w-ex, .w-ld, .w-mx, .w-tk, .smoke, .haze { animation: none; }
 	.smoke, .haze { display: none; }
 	.app-row { animation: none; opacity: 1; }
 }
