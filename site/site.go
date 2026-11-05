@@ -30,7 +30,7 @@ func New() *Site { return &Site{} }
 func (s *Site) Routes(r gosite.Router) {
 	r.GET("/", func(c *gosite.Context) error {
 		return r.Render(c, http.StatusOK, "construccion", gosite.Page{
-			Title:   "Próximamente | konex-landing",
+			Title:   "Próximamente Konex",
 			SEOData: map[string]any{"noIndex": true},
 		})
 	})

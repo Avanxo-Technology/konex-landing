@@ -202,45 +202,55 @@ body {
 }
 .app-add span { display: inline-block; margin-right: 0.25em; color: #93c5fd; font-size: 1.27em; line-height: 1; }
 
-/* four machines that get shot out from behind the phone, all from the same point
-   and each in its own direction, then pulled back in (decorative). They sit behind
-   the phone (z-index). --x/--y are the resting offset (em of .phone-wrap) from the
-   phone's centre, --r the spin they carry while flying; --s scales the machines. */
+/* alternative: the machines stand on top of the phone and work on the app (they
+   are drawn over it, inside .phone so they float with it); smoke drifts over the
+   app screen itself, not out of the machines. Offsets are em of .phone-wrap. */
 body:has(.construccion) {
 	overflow-x: clip;
 	--bg: #ffffff; --surface: #ffffff; --text: #0f172a; --muted: #475569; --border: #e2e8f0;
 	background: #fff; color: #0f172a;
 }
-.construccion { position: relative; padding-bottom: 11rem; }
+.construccion { position: relative; padding-bottom: 1rem; }
 .construccion-copy { position: relative; z-index: 1; }
 .phone-wrap { z-index: 1; }
-.phone-out { --s: 1; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-.phone-out svg { display: block; width: 100%; overflow: visible; fill: none; }
-.phone-out g, .phone-out path { transform-box: view-box; }
-.w-ex, .w-ld, .w-mx, .w-tk {
-	position: absolute; left: 50%; top: 50%; translate: -50% -50%;
-	/* gentle first exit, then the fast loop (it starts at the resting pose) */
-	animation: intro 2.2s 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) both, shoot 5s 3s infinite;
+
+.phone-top { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+.mt {
+	position: absolute; translate: -50% -100%;
+	animation: drive-in 0.8s var(--d, 0s) cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
-.w-ex { width: calc(6.4em * var(--s)); --x: -7;  --y: 23; --r: -50deg; }
-.w-ld { width: calc(5.2em * var(--s)); --x: -2.5; --y: 28; --r: 70deg; }
-.w-mx { width: calc(5.2em * var(--s)); --x: 2.5;  --y: 28; --r: -70deg; }
-.w-tk { width: calc(4.8em * var(--s)); --x: 8;   --y: 23; --r: 50deg; }
-/* wide screens: one machine out of each corner of the phone */
-@media (min-width: 52rem) {
-	.construccion { padding-bottom: 4rem; }
-	.phone-out { --s: 1.45; }
-	.w-ex { --x: -13;  --y: -14; --r: -80deg; }
-	.w-tk { --x: 13;   --y: -10; --r: 80deg; }
-	.w-ld { --x: -12;  --y: 16;  --r: 100deg; }
-	.w-mx { --x: 12.5; --y: 17;  --r: -100deg; }
-}
-/* soft shadow under each machine */
-.w-ex::after, .w-ld::after, .w-mx::after, .w-tk::after {
+.mt svg { display: block; width: 100%; overflow: visible; fill: none; }
+.mt g, .mt path { transform-box: view-box; }
+/* soft shadow so each one looks like it stands on the card */
+.mt::after {
 	content: ""; position: absolute; left: 6%; right: 6%; bottom: -0.15em; height: 0.45em; z-index: -1;
-	background: radial-gradient(ellipse, rgba(15, 23, 42, 0.28), rgba(15, 23, 42, 0) 70%);
+	background: radial-gradient(ellipse, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0) 70%);
 }
-.tk-bed { transform-origin: 6px 48px; animation: tk-dump 12s ease-in-out infinite; }
+/* one excavator and one cargo truck, working in the zone under the single row */
+.m-ex { left: 7.4em;  top: 25.4em; width: 9em; }
+.m-tk { left: 13.4em; top: 30.2em; width: 7em; }
+
+/* the work zone: the app section the machines work on (the smoke belongs to it) */
+.zone {
+	position: relative; height: 12.4em; border-radius: 1em;
+	border: 2px dashed #93c5fd; background: linear-gradient(#f8fafc, #e0ecff);
+}
+
+/* smoke over the app screen */
+.app-smoke { position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; border-radius: inherit; }
+.cloud {
+	position: absolute; width: 4em; height: 4em; margin: -2em 0 0 -2em; border-radius: 50%;
+	background: radial-gradient(circle, rgba(71, 85, 105, 0.8), rgba(71, 85, 105, 0) 68%);
+	opacity: 0; animation: cloud 4.6s ease-out infinite;
+}
+.cloud.dark { background: radial-gradient(circle, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0) 66%); }
+.cloud.big { width: 6em; height: 6em; margin: -3em 0 0 -3em; }
+.app-haze.dark { background: radial-gradient(ellipse, rgba(15, 23, 42, 0.38), rgba(15, 23, 42, 0) 68%); }
+.app-haze {
+	position: absolute; left: -10%; width: 120%; height: 5em; margin-top: -1em;
+	background: radial-gradient(ellipse, rgba(100, 116, 139, 0.42), rgba(100, 116, 139, 0) 68%);
+	opacity: 0; animation: haze-app 6s ease-in-out 1.2s infinite alternate;
+}
 
 .ex-house { animation: m-shake 0.16s linear infinite; }
 .ex-boom { transform-origin: 60px 42px; animation: ex-boom 3s ease-in-out infinite; }
@@ -251,48 +261,18 @@ body:has(.construccion) {
 .ld-bucket { transform-origin: 14px 28px; animation: ld-tip 2.4s ease-in-out infinite; }
 .mx-stripes { animation: mx-turn 1.6s linear infinite; }
 
-.smoke {
-	position: absolute; z-index: 3;
-	width: 1.1rem; height: 1.1rem; border-radius: 50%; pointer-events: none;
-	background: radial-gradient(circle, rgba(71, 85, 105, 0.75), rgba(71, 85, 105, 0) 70%);
-	opacity: 0; animation: smoke 2.4s ease-out infinite;
-}
-.smoke.dust {
-	background: radial-gradient(circle, rgba(148, 163, 184, 0.8), rgba(148, 163, 184, 0) 70%);
-	animation-name: dust; animation-duration: 2.4s;
-}
-.haze {
-	position: absolute; width: 10rem; height: 3.2rem; border-radius: 50%;
-	background: radial-gradient(ellipse, rgba(100, 116, 139, 0.4), rgba(100, 116, 139, 0) 70%);
-	animation: haze 5s ease-in-out infinite alternate;
-}
-.w-ex .haze { left: -10%; top: 35%; width: 100%; height: 3em; }
 
-@keyframes intro {
-	from { transform: translate(0, 0) scale(0.3) rotate(var(--r)); }
-	to { transform: translate(calc(var(--x) * 1em), calc(var(--y) * 1em)) scale(1) rotate(0deg); }
-}
-@keyframes shoot {
-	0%, 60% { transform: translate(calc(var(--x) * 1em), calc(var(--y) * 1em)) scale(1) rotate(0deg); animation-timing-function: ease-in; }
-	78% { transform: translate(0, 0) scale(0.3) rotate(var(--r)); animation-timing-function: linear; }
-	88% { transform: translate(0, 0) scale(0.3) rotate(var(--r)); animation-timing-function: cubic-bezier(0.2, 1.35, 0.4, 1); }
-	100% { transform: translate(calc(var(--x) * 1em), calc(var(--y) * 1em)) scale(1) rotate(0deg); }
-}
 @keyframes tk-dump { 0%, 30% { transform: rotate(0); } 38%, 56% { transform: rotate(-22deg); } 64%, 100% { transform: rotate(0); } }
 @keyframes ld-lift { 0%, 100% { transform: rotate(4deg); } 50% { transform: rotate(-10deg); } }
 @keyframes ld-tip { 0%, 100% { transform: rotate(8deg); } 50% { transform: rotate(-14deg); } }
 @keyframes mx-turn { to { stroke-dashoffset: -28; } }
-@keyframes smoke {
+@keyframes drive-in { from { transform: translateX(14em); } to { transform: none; } }
+@keyframes cloud {
 	0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
-	15% { opacity: 1; }
-	100% { opacity: 0; transform: translate(-0.8rem, -3.4rem) scale(2.6); }
+	22% { opacity: 1; }
+	100% { opacity: 0; transform: translate(var(--dx, 0), -9em) scale(2.4); }
 }
-@keyframes dust {
-	0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
-	20% { opacity: 0.9; }
-	100% { opacity: 0; transform: translate(0.6rem, -1.2rem) scale(2.2); }
-}
-@keyframes haze { from { transform: translateX(-0.6rem); opacity: 0.45; } to { transform: translateX(0.8rem); opacity: 1; } }
+@keyframes haze-app { from { opacity: 0; transform: translateX(-1.5em); } to { opacity: 1; transform: translateX(1.5em); } }
 @keyframes m-shake { 50% { transform: translate(0, 0.7px); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes ex-boom { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(5deg); } }
@@ -302,7 +282,7 @@ body:has(.construccion) {
 @keyframes phone-float { 50% { transform: translateY(-8px); } }
 @keyframes row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-	.phone, .phone-out *, .w-ex, .w-ld, .w-mx, .w-tk, .smoke, .haze { animation: none; }
-	.smoke, .haze { display: none; }
+	.phone, .mt, .mt *, .cloud, .app-haze { animation: none; }
+	.cloud, .app-haze { display: none; }
 	.app-row { animation: none; opacity: 1; }
 }
