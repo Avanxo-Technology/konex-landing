@@ -82,29 +82,39 @@ body {
 	--k-accent: #2563eb;
 	--k-accent-deep: #1e40af;
 	--k-ink: #0f172a;
-	width: min(62rem, 100vw - 3rem);
-	margin-left: 50%;
-	transform: translateX(-50%);
+	/* one screen, never scrolls: the section is exactly the viewport and everything inside
+	   (text + phone) shrinks to fit it */
+	position: relative;
+	box-sizing: border-box;
+	width: 100%; max-width: 74rem; margin: 0 auto;
+	height: 100vh; height: 100dvh;
+	padding: clamp(0.75rem, 2.5vh, 1.75rem) clamp(1rem, 4vw, 3rem);
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
-	gap: 3rem;
-	align-items: center;
+	align-content: center;
 	justify-items: center;
+	align-items: center;
+	gap: clamp(0.5rem, 2.2vh, 1.6rem);
 	text-align: center;
 }
+html:has(.construccion), body:has(.construccion) { height: 100%; overflow: hidden; }
+body:has(.construccion) .container { max-width: none; margin: 0; padding: 0; }
 .construccion-pill {
 	display: block;
 	color: var(--k-accent-deep);
-	font-size: clamp(1.25rem, 3vw, 1.75rem);
+	font-size: clamp(0.95rem, min(3vw, 3vh), 1.75rem);
 	font-weight: 700;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
 }
-.construccion h1 { margin: 1rem 0 0.75rem; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.1; letter-spacing: -0.03em; }
-.construccion-copy p { margin: 0 auto; max-width: 30rem; color: var(--muted); font-size: 1.1rem; }
+.construccion h1 { margin: clamp(0.35rem, 1.2vh, 1rem) 0 clamp(0.35rem, 1.2vh, 0.75rem); font-size: clamp(1.45rem, min(6vw, 5.6vh), 3.25rem); line-height: 1.1; letter-spacing: -0.03em; }
+.construccion-copy p { margin: 0 auto; max-width: 30rem; color: var(--muted); font-size: clamp(0.85rem, min(3.6vw, 2.4vh), 1.1rem); }
 @media (min-width: 52rem) {
 	.construccion { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); text-align: left; }
 	.construccion-copy p { margin: 0; }
+	.construccion h1 { font-size: clamp(1.8rem, min(4.2vw, 7vh), 3.25rem); }
+	.construccion-copy p { font-size: clamp(0.95rem, min(1.6vw, 2.6vh), 1.1rem); }
+	.construccion-pill { font-size: clamp(1.1rem, min(2vw, 3.2vh), 1.75rem); }
 }
 
 /* phone */
@@ -113,13 +123,36 @@ body {
    (matrix3d) computed from the screen's four corners. Design size of the layout:
    278 x 608 px; the mockup box is 493 x 561 px, scaled with --k. */
 .mock-wrap {
-	--k: 1.05;
+	/* --kw: what the width allows, --kh: what the height allows; the phone uses the smaller */
+	--kw: 0.5; --kh: 0.38;
+	--k: min(var(--kw), var(--kh));
 	position: relative; z-index: 1;
 	width: calc(493px * var(--k)); height: calc(561px * var(--k));
 }
-@media (max-width: 52rem) { .mock-wrap { --k: 0.86; } }
-@media (max-width: 30rem) { .mock-wrap { --k: 0.7; } }
-@media (max-width: 22rem) { .mock-wrap { --k: 0.58; } }
+/* stacked layout (phone under the text): width caps, then height caps */
+@media (min-width: 20rem) { .mock-wrap { --kw: 0.52; } }
+@media (min-width: 22rem) { .mock-wrap { --kw: 0.62; } }
+@media (min-width: 23rem) { .mock-wrap { --kw: 0.68; } }
+@media (min-width: 25rem) { .mock-wrap { --kw: 0.72; } }
+@media (min-width: 34rem) { .mock-wrap { --kw: 1.1; } }
+@media (min-height: 540px) { .mock-wrap { --kh: 0.46; } }
+@media (min-height: 620px) { .mock-wrap { --kh: 0.56; } }
+@media (min-height: 700px) { .mock-wrap { --kh: 0.68; } }
+@media (min-height: 780px) { .mock-wrap { --kh: 0.8; } }
+@media (min-height: 860px) { .mock-wrap { --kh: 0.95; } }
+@media (min-height: 1000px) { .mock-wrap { --kh: 1.15; } }
+/* two columns (phone beside the text): the whole height is for the phone */
+@media (min-width: 52rem) {
+	.mock-wrap { --kw: 0.8; --kh: 0.45; }
+}
+@media (min-width: 64rem) { .mock-wrap { --kw: 1.05; } }
+@media (min-width: 75rem) { .mock-wrap { --kw: 1.3; } }
+@media (min-width: 52rem) and (min-height: 460px) { .mock-wrap { --kh: 0.55; } }
+@media (min-width: 52rem) and (min-height: 540px) { .mock-wrap { --kh: 0.66; } }
+@media (min-width: 52rem) and (min-height: 620px) { .mock-wrap { --kh: 0.8; } }
+@media (min-width: 52rem) and (min-height: 700px) { .mock-wrap { --kh: 0.95; } }
+@media (min-width: 52rem) and (min-height: 800px) { .mock-wrap { --kh: 1.1; } }
+@media (min-width: 52rem) and (min-height: 900px) { .mock-wrap { --kh: 1.3; } }
 .mock { position: absolute; left: 0; top: 0; width: 493px; height: 561px; transform: scale(var(--k)); transform-origin: 0 0; }
 .mock-img { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
 /* the layout is clipped by the exact shape of the phone's screen (mockup-phone-hole.webp),
@@ -216,19 +249,16 @@ body {
 .app-add span { display: inline-block; margin-right: 0.25em; color: #93c5fd; font-size: 1.27em; line-height: 1; }
 
 /* page: dirt background */
-html:has(.construccion) { min-height: 100%; }
 body:has(.construccion) {
 	overflow-x: clip;
 	--bg: #3b2415; --surface: #ffffff; --text: #ffffff; --muted: #f1e6dc; --border: #e2e8f0;
 	/* dirt photo (static/img/tierra.webp) under a dark veil so the text stays readable */
 	background: linear-gradient(rgba(8, 12, 24, 0.62), rgba(8, 12, 24, 0.62)) 0 0 / 100% 100% no-repeat, url("/static/img/tierra.webp") center / cover no-repeat #3b2415;
-	min-height: 100vh;
 	color: #fff;
 }
 .construccion-copy { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 3px 22px rgba(0, 0, 0, 0.6); }
 .construccion-copy p { color: #fff; }
 .construccion .construccion-pill { color: #dbeafe; }
-.construccion { position: relative; padding-bottom: 2rem; }
 .construccion-copy { position: relative; z-index: 1; }
 @keyframes row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
