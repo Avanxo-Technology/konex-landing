@@ -122,13 +122,19 @@ body {
 @media (max-width: 22rem) { .mock-wrap { --k: 0.58; } }
 .mock { position: absolute; left: 0; top: 0; width: 493px; height: 561px; transform: scale(var(--k)); transform-origin: 0 0; }
 .mock-img { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+/* the layout is clipped by the exact shape of the phone's screen (mockup-phone-hole.webp),
+   so it fills the whole glass up to the bezel, rounded corners included */
+.mock-clip {
+	position: absolute; inset: 0; z-index: 2;
+	-webkit-mask: url("/static/img/mockup-phone-hole.webp") 0 0 / 100% 100% no-repeat;
+	mask: url("/static/img/mockup-phone-hole.webp") 0 0 / 100% 100% no-repeat;
+}
 .mock-screen {
-	position: absolute; left: 0; top: 0; width: 278px; height: 608px; z-index: 2;
-	transform-origin: 0 0; transform: matrix3d(0.739007,0.181629,0,-0.00018799,-0.398912,0.708034,0,-0.00005315,0,0,1,0,245.9242,12.9390,0,1);
+	position: absolute; left: 0; top: 0; width: 278px; height: 608px;
+	transform-origin: 0 0; transform: matrix3d(0.774320,0.190308,0,-0.00019698,-0.417974,0.741867,0,-0.00005569,0,0,1,0,246.3307,0.9126,0,1);
 	font-size: 16px;
 	display: flex; flex-direction: column;
 	overflow: hidden;
-	border-radius: 13% / 5.9%;
 	background: #f1f5f9;
 	color: var(--k-ink);
 	text-align: left;
@@ -148,7 +154,7 @@ body {
 	transform: rotate(-8deg);
 }
 .mock svg { display: block; fill: none; }
-.app-status { display: flex; justify-content: space-between; padding: 0.85em 1.5em 0; font-size: 0.7em; font-weight: 700; color: #fff; position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
+.app-status { display: flex; justify-content: space-between; padding: 1.7em 3em 0; font-size: 0.7em; font-weight: 700; color: #fff; position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
 .app-status-dots { display: flex; gap: 2px; align-items: flex-end; }
 .app-status-dots i { width: 3px; background: #fff; border-radius: 1px; }
 .app-status-dots i:nth-child(1) { height: 4px; }
@@ -191,7 +197,7 @@ body {
 .app-tile { --tile: #eff6ff; width: 2.9em; height: 2.9em; border-radius: 0.8em; background: var(--tile); color: var(--k-accent-deep); display: grid; place-items: center; }
 .app-tile svg { width: 2.1em; height: 2.1em; }
 
-.app-tabs { display: flex; justify-content: space-around; padding: 0.65em 0 0.9em; background: #fff; border-top: 1px solid #e2e8f0; }
+.app-tabs { display: flex; justify-content: space-around; padding: 0.65em 1.4em 1.35em; background: #fff; border-top: 1px solid #e2e8f0; }
 .app-tabs span { color: #94a3b8; }
 .app-tabs .on { color: var(--k-accent-deep); }
 .app-tabs svg { width: 1.2em; height: 1.2em; }
