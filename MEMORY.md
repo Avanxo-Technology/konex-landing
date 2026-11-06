@@ -8,7 +8,8 @@ Analytics, Replica. Read `AGENTS.md` for the thin-site rules.
 
 ## Current state: "Próximamente" page + waitlist (temporary)
 
-- `/` serves `theme/pages/construccion.html`, rendered with `r.Render` (not cached).
+- `/` serves `theme/pages/construccion.html`, rendered with `r.CachedRender` (it reads
+  the Cockpit `webapp` singleton for the share image, so a publish reaches it via purge).
   Fonts (Barlow, Barlow Condensed, JetBrains Mono) load through the layout's
   `{{define "head"}}` block. Styles: the `.construccion` block and the
   "Konex · Próximamente" `.kx-*` block at the end of `static/styles.css`.
@@ -63,11 +64,14 @@ Analytics, Replica. Read `AGENTS.md` for the thin-site rules.
   Google reads the page: the old `noIndex: true` was removed on purpose.
 - Core emits `og:image` RELATIVE (`/storage/uploads/...`) when assets are local, and
   crawlers (WhatsApp, Facebook, LinkedIn, X) ignore a relative image, so no preview
-  shows. Workaround in `site/site.go`: the `shareImage` constant, an absolute URL of
-  the 1200x630 JPG uploaded to Cockpit as the webapp "Default Image". Code wins over
-  Cockpit for that field. If the image is re-uploaded its path changes: update the
-  constant. DROP the constant once core makes the SEO image absolute with the site
-  URL (the blog addon already does); that is a gosite gap, report it there.
+  shows. Fix in `site/seo.go` (`shareImageURL`), called from the `/` handler: it reads
+  the Cockpit webapp singleton (`defaultImage` + `siteUrl`) and builds the absolute URL,
+  mirroring core's asset base (`STORAGE_ADAPTER` / `S3_PUBLIC_URL`, else
+  `/storage/uploads`). Nothing is hard-coded: changing "Default Image" in Cockpit changes
+  the preview. If `siteUrl` is empty and the image is relative it sets nothing (core's
+  relative value stays and no preview shows), so keep "Site URL" filled in.
+  DELETE `site/seo.go` once core makes the SEO image absolute with the site URL (the blog
+  addon already does); that is a gosite gap, report it there.
 - After changing a preview, force a re-scrape (Facebook Sharing Debugger >
   "Scrape again"; LinkedIn Post Inspector). WhatsApp caches the first preview.
 - The share image was generated from the page itself (1200x630, logo + headline +
@@ -77,7 +81,8 @@ Analytics, Replica. Read `AGENTS.md` for the thin-site rules.
 
 1. In `site/site.go`: `r.GET("/", homeHandler(r))`.
 2. Delete `theme/pages/construccion.html`, the `.construccion` and `.kx-*` rules in
-   `static/styles.css`, and the `shareImage` constant if core already absolutizes.
+   `static/styles.css`, and `site/seo.go` (+ its call in `site/site.go`) if core already
+   absolutizes the SEO image.
 3. Decide about `POST /lista-espera` (keep it for a signup block on the real home, or
    remove it with `site/waitlist.go`); keep the Forms data and plan the launch e-mail.
 4. Create the `home` singleton in Cockpit (grant `forms/manage` and
