@@ -106,14 +106,6 @@ body:has(.construccion) .container { max-width: none; margin: 0; padding: 0; }
 	margin: 0 auto clamp(0.3rem, 1.2vh, 0.9rem);
 	filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
 }
-.construccion-pill {
-	display: block;
-	color: var(--k-accent-deep);
-	font-size: clamp(1.2rem, min(4.6vw, 3.8vh), 2.4rem);
-	font-weight: 800;
-	letter-spacing: 0.1em;
-	text-transform: uppercase;
-}
 .construccion h1 { margin: clamp(0.35rem, 1.2vh, 1rem) 0 clamp(0.35rem, 1.2vh, 0.75rem); font-size: clamp(1.45rem, min(6vw, 5.6vh), 3.25rem); line-height: 1.1; letter-spacing: -0.03em; }
 .construccion-copy p { margin: 0 auto; max-width: 30rem; color: var(--muted); font-size: clamp(0.85rem, min(3.6vw, 2.4vh), 1.1rem); }
 @media (min-width: 52rem) {
@@ -122,7 +114,6 @@ body:has(.construccion) .container { max-width: none; margin: 0; padding: 0; }
 	.construccion-copy p { margin: 0; }
 	.construccion h1 { font-size: clamp(1.8rem, min(4.2vw, 7vh), 3.25rem); }
 	.construccion-copy p { font-size: clamp(0.95rem, min(1.6vw, 2.6vh), 1.1rem); }
-	.construccion-pill { font-size: clamp(1.5rem, min(3vw, 5vh), 2.9rem); }
 }
 
 /* phone */
@@ -260,26 +251,91 @@ body:has(.construccion) .container { max-width: none; margin: 0; padding: 0; }
 body:has(.construccion) {
 	overflow-x: clip;
 	--bg: #3b2415; --surface: #ffffff; --text: #ffffff; --muted: #f1e6dc; --border: #e2e8f0;
-	/* dirt photo (static/img/tierra.webp) under a dark veil so the text stays readable */
-	background: linear-gradient(rgba(8, 12, 24, 0.62), rgba(8, 12, 24, 0.62)) 0 0 / 100% 100% no-repeat, url("/static/img/tierra.webp") center / cover no-repeat #3b2415;
+	/* dirt photo (static/img/tierra.webp); the dark veil is the gradient in the Próximamente block at the end */
+	background: url("/static/img/tierra.webp") center / cover no-repeat #3b2415;
 	color: #fff;
 }
 .construccion-copy { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 3px 22px rgba(0, 0, 0, 0.6); }
 .construccion-copy p { color: #fff; }
-/* same blue as the phone's "konex" wordmark; the contrast comes from a dark halo behind the
-   letters (stacked soft black shadows), not from a border or a lighter colour */
-.construccion .construccion-pill {
-	position: relative;
-	color: var(--k-accent-deep);
-	text-shadow:
-		0 0 2px rgba(0, 0, 0, 0.95),
-		0 0 6px rgba(0, 0, 0, 0.95),
-		0 0 14px rgba(0, 0, 0, 0.9),
-		0 0 26px rgba(0, 0, 0, 0.85),
-		0 0 42px rgba(0, 0, 0, 0.75);
-}
 .construccion-copy { position: relative; z-index: 1; }
 @keyframes row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
 	.app-row { animation: none; opacity: 1; }
 }
+
+/* ===== Konex · Próximamente (mobile-first) ===== */
+.construccion-copy{--kx-amber:#F5A623;--kx-ink:#14110B;--kx-text:#D4D7DD;--kx-muted:#9CA3AF;
+  width:100%;max-width:36rem;font-family:Barlow,system-ui,sans-serif;text-align:left}
+body:has(.construccion){background-image:
+  linear-gradient(180deg,rgba(8,8,10,.88) 0%,rgba(8,8,10,.78) 55%,rgba(8,8,10,.55) 100%),
+  url("/static/img/tierra.webp")}
+/* The page scrolls (the viewport scrolls, not the body) whenever the content is taller than the
+   screen: always on mobile, and on short laptop screens. On a tall desktop the section is exactly
+   one screen (min-height). overflow-x stays clipped so the phone never adds a sideways scroll. */
+html:has(.construccion),body:has(.construccion){height:auto}
+html:has(.construccion){overflow-y:auto}
+body:has(.construccion){overflow-x:clip;overflow-y:visible}
+.construccion{height:auto;min-height:100dvh;overflow-x:clip}
+@media (max-width:51.99rem){
+  .construccion{padding:2rem 1.25rem 2.5rem;gap:2rem;align-content:start}
+}
+.construccion-copy .construccion-logo{width:88px;height:auto;margin:0}
+.kx-eyebrow{display:flex;align-items:center;gap:10px;margin:22px 0 12px;color:var(--kx-amber);
+  font:500 11.5px/1 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+.kx-eyebrow::before{content:"";width:22px;height:2px;background:var(--kx-amber)}
+.construccion-copy h1{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:800;
+  font-size:clamp(2.6rem,12.5vw,3.4rem);line-height:.92;text-transform:uppercase;letter-spacing:0;
+  color:#fff;margin:0 0 16px;text-align:left}
+.construccion-copy h1 span{display:block;color:rgba(255,255,255,.55)}
+.construccion-copy .kx-sub{color:var(--kx-text);font-size:17px;line-height:1.5;margin:0 0 24px;max-width:30em;text-align:left}
+.kx-feat{display:grid;grid-template-columns:1fr;gap:0;margin:0 0 26px;padding:0;list-style:none}
+.kx-feat li{display:grid;grid-template-columns:2.25rem 1fr;column-gap:4px;border-top:1px solid rgba(255,255,255,.18);padding:12px 0}
+.kx-feat li:last-child{border-bottom:1px solid rgba(255,255,255,.18)}
+.kx-feat small{grid-row:span 2;color:var(--kx-amber);font:500 12px/1.6 'JetBrains Mono',monospace}
+.kx-feat b{color:#fff;font-weight:600;font-size:16px;line-height:1.3}
+.kx-feat span{color:var(--kx-muted);font-size:15px;line-height:1.4}
+.kx-form{display:flex;flex-direction:column;gap:8px;max-width:470px}
+.kx-form input{width:100%;box-sizing:border-box;background:rgba(10,12,18,.75);border:1px solid rgba(255,255,255,.28);
+  border-radius:4px;outline:0;color:#fff;font:400 16px Barlow,system-ui;padding:15px 16px}
+.kx-form input:focus{border-color:var(--kx-amber)}
+.kx-form input::placeholder{color:#7C828D}
+.kx-form button{border:0;border-radius:4px;background:var(--kx-amber);color:var(--kx-ink);
+  font:600 16px Barlow,system-ui;padding:15px 22px;cursor:pointer}
+.kx-form button:hover{background:#FFB938}
+.kx-form button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.construccion-copy .kx-note{color:#A3A9B3;font-size:13.5px;margin:12px 0 0;text-align:left}
+@media (min-width:26rem){
+  .kx-form{flex-direction:row;gap:0;border:1px solid rgba(255,255,255,.28);border-radius:4px;background:rgba(10,12,18,.75)}
+  .kx-form:focus-within{border-color:var(--kx-amber)}
+  .kx-form input{border:0;background:transparent;flex:1;min-width:0}
+  .kx-form button{border-radius:0 3px 3px 0;white-space:nowrap}
+}
+@media (min-width:52rem){
+  body:has(.construccion){background-image:
+    linear-gradient(90deg,rgba(8,8,10,.9) 0%,rgba(8,8,10,.72) 48%,rgba(8,8,10,.3) 100%),
+    url("/static/img/tierra.webp")}
+  .construccion-copy{max-width:580px}
+  .construccion-copy .construccion-logo{width:120px}
+  .kx-eyebrow{font-size:13px;margin:28px 0 14px}
+  .kx-eyebrow::before{width:28px}
+  .construccion-copy h1{font-size:clamp(3.25rem,6.2vw,5.25rem);margin-bottom:22px}
+  .construccion-copy .kx-sub{font-size:19px;margin-bottom:32px}
+  .kx-feat{grid-template-columns:repeat(3,1fr);gap:16px;max-width:470px;margin-bottom:34px}
+  .kx-feat li{display:block;padding:14px 0 0}
+  .kx-feat li:last-child{border-bottom:0}
+  .kx-feat small,.kx-feat b{display:block;margin-bottom:6px}
+  .kx-feat b{font-size:17px}
+  .construccion-copy .kx-note{font-size:14px}
+}
+/* just above 52rem the phone is wider than its column and leans left over the copy: keep the copy clear of it */
+@media (min-width:52rem) and (max-width:63.99rem){
+  .construccion-copy{padding-right:1.5rem}
+}
+@keyframes kx-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.mock-wrap{animation:kx-float 5s ease-in-out infinite;will-change:transform}
+@media (prefers-reduced-motion:reduce){.mock-wrap{animation:none}}
+
+/* waitlist feedback (after the submit) */
+.construccion-copy .kx-done{margin:0;max-width:470px;color:var(--kx-amber);font:600 18px/1.4 Barlow,system-ui,sans-serif;text-align:left}
+.construccion-copy .kx-error{margin:10px 0 0;max-width:470px;color:#FF9C94;font-size:14px;text-align:left}
+.construccion-copy .kx-error[hidden]{display:none}

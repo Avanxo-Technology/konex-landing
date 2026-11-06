@@ -7,6 +7,11 @@
   The phone is pure HTML/CSS: the machine icons are inline SVG <symbol>s that
   use currentColor, so they take the colour of whatever wraps them.
 */}}
+{{define "head"}}
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=Barlow:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+{{end}}
 {{define "content"}}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 	<defs>
@@ -46,9 +51,25 @@
 <section class="construccion">
 	<div class="construccion-copy">
 		<img class="construccion-logo" src="/static/img/konex-logo.webp" alt="Konex" width="640" height="458">
-		<span class="construccion-pill">Próximamente</span>
-		<h1>Estamos construyendo tu nueva app</h1>
-		<p>Konex renta tu maquinaria: la ofrecemos puerta a puerta y tú sigues cada proyecto, cada operador y cada hora desde tu app.</p>
+		<div class="kx-eyebrow">En obra negra · Abrimos pronto</div>
+		<h1>Tu maquinaria<br>en obra. <span>Tú,&nbsp;en&nbsp;control.</span></h1>
+		<p class="kx-sub">Rentamos tu maquinaria y la llevamos puerta a puerta hasta la obra que la necesita. Tú sigues cada proyecto, cada operador y cada hora desde el celular.</p>
+		<ul class="kx-feat">
+			<li><small>01</small><b>Publícala</b><span>Sube tu máquina y nosotros la movemos.</span></li>
+			<li><small>02</small><b>Síguela</b><span>Horas, operador y obra en tiempo real.</span></li>
+			<li><small>03</small><b>Ponla a rendir</b><span>Menos días parada en el patio.</span></li>
+		</ul>
+		{{/* Works without JS (plain POST re-renders this page); the script below upgrades it to fetch. */}}
+		{{if .Data.anotado}}
+		<p class="kx-done" role="status">Anotado. Te escribimos apenas abramos.</p>
+		{{else}}
+		<form class="kx-form" action="/lista-espera" method="post">
+			<input type="email" name="email" placeholder="Tu correo" required aria-label="Tu correo" autocomplete="email">
+			<button type="submit">Avísame</button>
+		</form>
+		{{if .Data.error}}<p class="kx-error" role="alert">{{.Data.error}}</p>{{end}}
+		{{end}}
+		<p class="kx-note">Para dueños de maquinaria y constructoras. Un correo al lanzar, nada más.</p>
 	</div>
 
 	<div class="mock-wrap">
@@ -110,4 +131,40 @@
 	</div>
 	</div>
 </section>
+<script>
+(function () {
+	var form = document.querySelector(".kx-form");
+	if (!form || !window.fetch) return;
+	var msg = document.createElement("p");
+	msg.className = "kx-error";
+	msg.setAttribute("role", "alert");
+	msg.hidden = true;
+	form.after(msg);
+	form.addEventListener("submit", function (e) {
+		e.preventDefault();
+		var btn = form.querySelector("button");
+		btn.disabled = true;
+		msg.hidden = true;
+		fetch(form.action, {
+			method: "POST",
+			headers: { "Accept": "application/json" },
+			body: new URLSearchParams(new FormData(form))
+		}).then(function (r) {
+			return r.json().then(function (j) { return { ok: r.ok && j.ok, error: j.error }; });
+		}).then(function (res) {
+			if (!res.ok) throw new Error(res.error || "");
+			var done = document.createElement("p");
+			done.className = "kx-done";
+			done.setAttribute("role", "status");
+			done.textContent = "Anotado. Te escribimos apenas abramos.";
+			form.replaceWith(done);
+			msg.remove();
+		}).catch(function (err) {
+			msg.textContent = err.message || "No pudimos guardar tu correo. Intenta de nuevo.";
+			msg.hidden = false;
+			btn.disabled = false;
+		});
+	});
+})();
+</script>
 {{end}}
