@@ -1,5 +1,5 @@
-github.com/Avanxo-Technology/gosite-cli/core v0.60.0 h1:HTI7x0OGQzoz2S+c3q/VtJV7r1ht0EFR+L76PgSxK2o=
-github.com/Avanxo-Technology/gosite-cli/core v0.60.0/go.mod h1:ofxZ5d6jB9I+m9cftz4p7w9WyWcnFX/f+mXDT/SBraA=
+github.com/Avanxo-Technology/gosite-cli/core v0.64.1 h1:zc2vmYYNatzs5Pf7wpUkFBqhE/XOLH8MCOvhvdhc5RY=
+github.com/Avanxo-Technology/gosite-cli/core v0.64.1/go.mod h1:ofxZ5d6jB9I+m9cftz4p7w9WyWcnFX/f+mXDT/SBraA=
 github.com/alicebob/miniredis/v2 v2.35.0 h1:QwLphYqCEAo1eu1TqPRN2jgVMPBweeQcR21jeqDCONI=
 github.com/alicebob/miniredis/v2 v2.35.0/go.mod h1:TcL7YfarKPGDAthEtl5NBeHZfeUQj6OXMm/+iu5cLMM=
 github.com/bsm/ginkgo/v2 v2.12.0 h1:Ny8MWAHyOepLGlLKYmXG4IEkioBysk6GpaRTLC8zwWs=
