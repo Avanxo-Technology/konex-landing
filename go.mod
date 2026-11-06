@@ -3,7 +3,7 @@ module github.com/example/konex-landing
 // Echo v5 (inside gosite core) requires Go 1.25 or newer.
 go 1.25.0
 
-require github.com/Avanxo-Technology/gosite-cli/core v0.60.0
+require github.com/Avanxo-Technology/gosite-cli/core v0.64.1
 
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect

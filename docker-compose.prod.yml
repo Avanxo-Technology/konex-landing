@@ -94,7 +94,7 @@ services:
       # gosite's Cockpit addons at the core version in gosite.yml, fetched by
       # BuildKit from the gosite repository. Nothing of them lives in this repo.
       additional_contexts:
-        gosite-addons: "https://github.com/Avanxo-Technology/gosite-cli.git#core/v0.60.0:src/addons"
+        gosite-addons: "https://github.com/Avanxo-Technology/gosite-cli.git#core/v0.64.1:src/addons"
     restart: unless-stopped
     environment:
       # Read by cockpit/config.php through Cockpit's ${VAR} resolution.
