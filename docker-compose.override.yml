@@ -7,4 +7,9 @@
 #       environment:
 #         FEATURE_FLAG: "on"
 
-services: {}
+services:
+  app:
+    environment:
+      # The source is bind-mounted from the host, so git inside the container
+      # refuses it ("dubious ownership") and `go build` fails stamping VCS info.
+      GOFLAGS: "-buildvcs=false"

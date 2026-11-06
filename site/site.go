@@ -34,6 +34,7 @@ func (s *Site) Routes(r gosite.Router) {
 			SEOData: map[string]any{"noIndex": true},
 		})
 	})
+	r.POST("/lista-espera", joinWaitlist(r))
 }
 
 // homeHandler is the real home page, parked until the site goes live. To
