@@ -275,7 +275,10 @@ body:has(.construccion){background-image:
 html:has(.construccion),body:has(.construccion){height:auto}
 html:has(.construccion){overflow-y:auto}
 body:has(.construccion){overflow-x:clip;overflow-y:visible}
-.construccion{height:auto;min-height:100dvh;overflow-x:clip}
+.construccion{height:auto;min-height:100dvh}
+/* Clip sideways overflow on the full-width <main>, not on .construccion: that section is narrower than the
+   window on wide screens (max-width 74rem), and clipping there cut the phone's cast shadow in a hard line. */
+body:has(.construccion) .container{overflow-x:clip}
 @media (max-width:51.99rem){
   .construccion{padding:2rem 1.25rem 2.5rem;gap:2rem;align-content:start}
 }
