@@ -65,6 +65,7 @@
 		{{else}}
 		<form class="kx-form" action="/lista-espera" method="post">
 			<input type="email" name="email" placeholder="Tu correo" required aria-label="Tu correo" autocomplete="email">
+			<input class="kx-hp" type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 			<button type="submit">Avísame</button>
 		</form>
 		{{if .Data.error}}<p class="kx-error" role="alert">{{.Data.error}}</p>{{end}}

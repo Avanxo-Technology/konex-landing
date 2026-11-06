@@ -339,3 +339,5 @@ body:has(.construccion){overflow-x:clip;overflow-y:visible}
 .construccion-copy .kx-done{margin:0;max-width:470px;color:var(--kx-amber);font:600 18px/1.4 Barlow,system-ui,sans-serif;text-align:left}
 .construccion-copy .kx-error{margin:10px 0 0;max-width:470px;color:#FF9C94;font-size:14px;text-align:left}
 .construccion-copy .kx-error[hidden]{display:none}
+/* honeypot: out of sight and out of the tab order; only bots fill it in */
+.kx-form .kx-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
